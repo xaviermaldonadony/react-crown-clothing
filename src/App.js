@@ -23,9 +23,6 @@ class App extends React.Component {
 		// returns firebase.Unsubscribe
 		// api call
 		this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
-			// this.setState({ currentUser: user });
-			// createuserProfileDocument(user);
-			// console.log(user);
 			// if not null
 			if (userAuth) {
 				const userRef = await createuserProfileDocument(userAuth);
@@ -39,11 +36,9 @@ class App extends React.Component {
 							...snapShot.data(),
 						},
 					});
-					console.log(this.state);
 				});
 			} else {
 				this.setState({ currentUser: userAuth });
-				// console.log(this.state);
 			}
 		});
 	}
