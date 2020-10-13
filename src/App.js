@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 
 import './App.scss';
@@ -10,6 +10,7 @@ import Header from './components/header/header.component';
 import SingInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import { auth, createuserProfileDocument } from './firebase/firebase.utils';
 import { setCurrentUser } from './redux/user/user.actions';
+import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 
 class App extends React.Component {
 	unsubscribeFromAuth = null;
@@ -49,12 +50,27 @@ class App extends React.Component {
 				<Switch>
 					<Route exact path='/' component={HomePage} />
 					<Route path='/shop' component={ShopPage} />
-					<Route path='/signIn' component={SingInAndSignUpPage} />
+					<Route
+						exact
+						path='/signIn'
+						// render, what component to retyrb
+						render={() =>
+							this.props.currentUser ? (
+								<Redirect to='/' />
+							) : (
+								<SignInAndSignUpPage />
+							)
+						}
+					/>
 				</Switch>
 			</div>
 		);
 	}
 }
+
+const mapStateToProps = ({ user }) => ({
+	currentUser: user.currentUser,
+});
 
 const mapDispatchtoProps = (dispatch) => ({
 	// retrun setCurrentUser
@@ -64,4 +80,4 @@ const mapDispatchtoProps = (dispatch) => ({
 });
 
 //  null, becuase we dont need any state to props from our reducer
-export default connect(null, mapDispatchtoProps)(App);
+export default connect(mapStateToProps, mapDispatchtoProps)(App);
