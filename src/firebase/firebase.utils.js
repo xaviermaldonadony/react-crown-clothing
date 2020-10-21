@@ -16,7 +16,7 @@ export const createuserProfileDocument = async (userAuth, additionalData) => {
 
 	// doc lets us do crud operations
 	const userRef = firestore.doc(`users/${userAuth.uid}`);
-
+	// firebase always give su back a snapshot object even if there is no user in the db
 	const snapShot = await userRef.get();
 	// console.log(userAuth);
 	// console.log(snapShot);
@@ -45,6 +45,23 @@ export const createuserProfileDocument = async (userAuth, additionalData) => {
 
 firebase.initializeApp(config);
 
+//
+export const addCollectionAndDocuments = async (collectionKey, objecToAdd) => {
+	const collectionRef = firestore.collection(collectionKey);
+
+	// firestore can only make on set call at a time
+	// create a batch just in case we have an error and we don't set all of
+	//  our data if we were looping it
+	const batch = firestore.batch();
+	objecToAdd.forEach((obj) => {
+		// it is saying, give me a new doc reference in this collection
+		// and it generates a new random id
+		const newDocRef = collectionRef.doc();
+		batch.set(newDocRef, obj);
+	});
+	// returns a promise
+	return await batch.commit();
+};
 // initialize
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();

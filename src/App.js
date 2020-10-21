@@ -12,15 +12,20 @@ import CheckoutPage from './pages/checkout/checkout.component';
 
 import Header from './components/header/header.component';
 
-import { auth, createuserProfileDocument } from './firebase/firebase.utils';
+import {
+	auth,
+	createuserProfileDocument,
+	addCollectionAndDocuments,
+} from './firebase/firebase.utils';
 import { setCurrentUser } from './redux/user/user.actions';
 import { selectCurrentUser } from './redux/user/user.selectors';
+import { selectCollectionsForPreview } from './redux/shop/shop.selectors';
 
 class App extends React.Component {
 	unsubscribeFromAuth = null;
 
 	componentDidMount() {
-		const { setCurrentUser } = this.props;
+		const { setCurrentUser, collectionsArray } = this.props;
 		// returns firebase.Unsubscribe, it's an 	api call
 		// Adds an observer for changes to the user's sign-in state.
 		this.unsubscribeFromAuth = auth.onAuthStateChanged(async (userAuth) => {
@@ -29,8 +34,10 @@ class App extends React.Component {
 				const userRef = await createuserProfileDocument(userAuth);
 
 				//  we either get a new user or a current user
+				// listener
 				userRef.onSnapshot((snapShot) => {
 					// data, we can see the properties
+					// we set the current user object in our redux reducer
 					setCurrentUser({
 						id: snapShot.id,
 						...snapShot.data(),
@@ -39,6 +46,10 @@ class App extends React.Component {
 			} else {
 				setCurrentUser(userAuth);
 			}
+			addCollectionAndDocuments(
+				'collections',
+				collectionsArray.map(({ title, items }) => ({ title, items }))
+			);
 		});
 	}
 
@@ -75,6 +86,7 @@ class App extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
 	currentUser: selectCurrentUser,
+	collectionsArray: selectCollectionsForPreview,
 });
 
 const mapDispatchtoProps = (dispatch) => ({
