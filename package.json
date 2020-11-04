@@ -2,7 +2,7 @@
   "name": "react-crown-clothing",
   "version": "0.1.0",
   "private": true,
-    "engines": {
+  "engines": {
     "node": "12.18.3"
   },
   "dependencies": {
@@ -20,6 +20,7 @@
     "redux": "^4.0.5",
     "redux-logger": "^3.0.6",
     "redux-persist": "^6.0.0",
+    "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
     "yarn": "^1.22.10"
   },
