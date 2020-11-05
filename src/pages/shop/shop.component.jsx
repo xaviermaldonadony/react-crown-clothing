@@ -1,19 +1,10 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
-import { createStructuredSelector } from 'reselect';
 import { connect } from 'react-redux';
 
 import { fetchCollectionsStartAsync } from '../../redux/shop/shop.actions';
-import { selectIsCollectionFetching } from '../../redux/shop/shop.selectors';
-import { selectIsCollectionsLoaded } from '../../redux/shop/shop.selectors';
-
-import WithSpinner from '../../components/with-spinner/with-spinner.component';
-
-import CollectionsOverView from '../../components/collections-overview/collections-overview.components';
-import CollectionPage from '../collection/collection.component';
-
-const CollectionsOverViewWithSpinner = WithSpinner(CollectionsOverView);
-const CollectionPageWithSpinner = WithSpinner(CollectionPage);
+import CollectionPageContainer from '../collection/collection.container';
+import CollectionsOverviewContainer from '../../components/collections-overview/collections-overview.container';
 
 // we get match becuase or component is inside of a Route
 class ShopPage extends React.Component {
@@ -24,49 +15,25 @@ class ShopPage extends React.Component {
 	}
 
 	render() {
-		// isCollectionFetching gets rendered before componentDidMount
-		// so it uses the default value which is false
-		// passing this value in the spinner will cause it not to render it
-		// it will render our wrapped component with it's props shop as null
-		// causing an error
-		// we need a different selector
-		const { match, isCollectionFetching, isCollectionLoaded } = this.props;
-
+		const { match } = this.props;
 		return (
 			<div className='shop-page'>
 				<Route
 					exact
 					path={`${match.path}`}
-					render={(props) => (
-						<CollectionsOverViewWithSpinner
-							isLoading={isCollectionFetching}
-							{...props}
-						/>
-					)}
+					component={CollectionsOverviewContainer}
 				/>
 				<Route
 					path={`${match.path}/:collectionId`}
-					// render takes afunction where the params in the func, are the parms the omponent will
-					// receive
-					render={(props) => (
-						<CollectionPageWithSpinner
-							isLoading={!isCollectionLoaded}
-							{...props}
-						/>
-					)}
+					component={CollectionPageContainer}
 				/>
 			</div>
 		);
 	}
 }
 
-const mapStateToProps = createStructuredSelector({
-	isCollectionFetching: selectIsCollectionFetching,
-	isCollectionLoaded: selectIsCollectionsLoaded,
-});
-
 const mapDispatchToProps = (dispatch) => ({
 	fetchCollectionsStartAsync: () => dispatch(fetchCollectionsStartAsync()),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShopPage);
+export default connect(null, mapDispatchToProps)(ShopPage);
