@@ -24,3 +24,10 @@ export const selectIsCollectionFetching = createSelector(
 	[selectShop],
 	(shop) => shop.isFetching
 );
+
+// tells us if our state has loaded so we won't rended a component with null values
+export const selectIsCollectionsLoaded = createSelector(
+	[selectShop],
+	// if null, which is a falsy value we double "!!" and we get the actual boolean value
+	(shop) => !!shop.collections
+);

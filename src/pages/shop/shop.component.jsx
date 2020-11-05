@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import { fetchCollectionsStartAsync } from '../../redux/shop/shop.actions';
 import { selectIsCollectionFetching } from '../../redux/shop/shop.selectors';
+import { selectIsCollectionsLoaded } from '../../redux/shop/shop.selectors';
 
 import WithSpinner from '../../components/with-spinner/with-spinner.component';
 
@@ -23,7 +24,13 @@ class ShopPage extends React.Component {
 	}
 
 	render() {
-		const { match, isCollectionFetching } = this.props;
+		// isCollectionFetching gets rendered before componentDidMount
+		// so it uses the default value which is false
+		// passing this value in the spinner will cause it not to render it
+		// it will render our wrapped component with it's props shop as null
+		// causing an error
+		// we need a different selector
+		const { match, isCollectionFetching, isCollectionLoaded } = this.props;
 
 		return (
 			<div className='shop-page'>
@@ -43,7 +50,7 @@ class ShopPage extends React.Component {
 					// receive
 					render={(props) => (
 						<CollectionPageWithSpinner
-							isLoading={isCollectionFetching}
+							isLoading={!isCollectionLoaded}
 							{...props}
 						/>
 					)}
@@ -55,6 +62,7 @@ class ShopPage extends React.Component {
 
 const mapStateToProps = createStructuredSelector({
 	isCollectionFetching: selectIsCollectionFetching,
+	isCollectionLoaded: selectIsCollectionsLoaded,
 });
 
 const mapDispatchToProps = (dispatch) => ({
