@@ -5,7 +5,8 @@ import 'firebase/auth'; // for the auth
 import FIREBASE_CONFIG from './firebase.config';
 
 const config = FIREBASE_CONFIG;
-
+// Initialize Firebase
+firebase.initializeApp(config);
 //  take our user from auth and store it inot our database
 // api request therefore async
 export const createuserProfileDocument = async (userAuth, additionalData) => {
@@ -70,8 +71,6 @@ export const getCurrentUser = () => {
 		}, reject);
 	});
 };
-
-firebase.initializeApp(config);
 
 // initialize
 export const auth = firebase.auth();
