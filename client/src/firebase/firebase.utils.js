@@ -47,6 +47,8 @@ export const createuserProfileDocument = async (userAuth, additionalData) => {
 export const convertCollectionsSnapShotToMap = (collections) => {
 	const transformedCollection = collections.docs.map((doc) => {
 		const { title, items } = doc.data();
+		console.log('firebase utils');
+		console.log(title, items);
 
 		return {
 			routeName: encodeURI(title),

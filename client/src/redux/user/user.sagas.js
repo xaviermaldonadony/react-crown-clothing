@@ -7,7 +7,6 @@ import {
 	SIGN_OUT_START,
 	SIGN_UP_START,
 	SIGN_UP_SUCCESS,
-	SIGN_UP_FAILURE,
 } from './user.types';
 
 import {
