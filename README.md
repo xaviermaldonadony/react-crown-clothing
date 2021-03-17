@@ -14,4 +14,4 @@ Based of a udemy tutoiral create an E-commerece
 - Stripe Payment
 - web responsive
 
-#same project but [ Graph Ql ](https://github.com/xaviermaldonadony/react-crown-clothing-graphql) apollo client is used local state
+# Same project but [ Graph Ql ](https://github.com/xaviermaldonadony/react-crown-clothing-graphql) apollo client is used local state
