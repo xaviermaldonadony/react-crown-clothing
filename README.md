@@ -1,6 +1,6 @@
 # Crown Clothing
 
-Based of a udemy tutoiral create an E-commerece
+Based of a udemy tutoiral create an E-commerece website
 
 ## Deployed with [heroku](https://mx-crown-clothing.herokuapp.com/)
 
